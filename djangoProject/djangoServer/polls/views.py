@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
+from .serializers import QuestionSerializer, ChoiceSerializer
 
 from .models import Choice, Question
 
@@ -19,11 +20,13 @@ class IndexView(generic.ListView):
 class DetailView(generic.DetailView):
     model = Question
     template_name = 'polls/detail.html'
+    serializer_class = QuestionSerializer
 
 
 class ResultsView(generic.DetailView):
     model = Question
     template_name = 'polls/results.html'
+    serializer_class = ChoiceSerializer
 
 def vote(request, question_id):
   question = get_object_or_404(Question, pk=question_id)
