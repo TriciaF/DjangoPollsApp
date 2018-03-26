@@ -4,17 +4,27 @@ from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
 from .serializers import QuestionSerializer, ChoiceSerializer
-
+from django.http import JsonResponse
+from django.core import serializers
+from rest_framework.views import APIView
 from .models import Choice, Question
 
-class IndexView(generic.ListView):
-    template_name = 'polls/index.html'
-    context_object_name = 'latest_question_list'
+class IndexView(APIView):
+  def get(self, request, format=None):
+    questions = Question.objects.all()
+    questions_serialized = serializers.serialize('json', questions)
+    return JsonResponse(questions_serialized, safe=False)
 
-    def get_queryset(self):
-        return Question.objects.filter(
-          pub_date__lte=timezone.now()
-        ).order_by('-pub_date')
+
+# class IndexView(generic.ListView):
+    # template_name = 'polls/index.html'
+    # context_object_name = 'latest_question_list'
+
+    # def get_queryset():
+    #   questions = Question.objects.all()
+    #   questions_serialized = serializers.serialize('json', questions)
+    #   return JsonResponse(questions_serialized, safe=False)
+          
 
 class DetailView(generic.DetailView):
     model = Question

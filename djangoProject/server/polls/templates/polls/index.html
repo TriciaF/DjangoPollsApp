@@ -1,17 +1,4 @@
-<!-- {% load static %} -->
-
-<!-- <link rel="stylesheet" type="text/css" href="{% static 'polls/styles.css' %}" /> {% if latest_question_list %}
-<ul>
-    {% for question in latest_question_list %}
-    <li>
-        <a href="{% url 'polls:detail' question.id %} ">{{ question.question_text }}</a></li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>No polls are available.</p>
-{% endif %} -->
-
-<!DOCTYPE html>
+{% load react %} -->
 
 <html>
 
@@ -22,10 +9,18 @@
 </head>
 
 <div>
-    <div id="root">
-    </div>
+
+    {% react_render component="App" props=question_data %}
 </div>
 <script>
-    window.react_mount = document.getElementById('root')
+    ReactDOM.hydrate(
+        React.createElement(App, {
+            example: 1
+        }),
+        document.getElementById('App')
+    );
 </script>
-<script src="../../../../client/src/{{Apps.js}}"></script>
+<!-- <script src="/client/src/{{Apps.js}}"></script> -->
+
+
+</html>
